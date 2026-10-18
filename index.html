@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zenframe Labs</title>
+<meta name="description" content="Zenframe Labs makes After Effects tools for editors. Zenframe Assistant puts Zeni, an AI assistant, in your After Effects panel.">
+<meta property="og:title" content="Zenframe Labs">
+<meta property="og:description" content="After Effects tools for editors. Meet Zeni, the assistant that lives in your panel.">
+<meta property="og:image" content="https://zenframelabs.com/assets/logo-glow.png">
+<meta name="theme-color" content="#0B0A0F">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#0B0A0F}
+a{color:#CFC2FF}a:hover{color:#FFFFFF}
+@keyframes zf-play{from{left:0%}to{left:100%}}
+@keyframes zf-hit{0%{opacity:1;transform:scaleY(1.35);box-shadow:0 0 18px 4px rgba(184,165,248,.9)}8%{opacity:.5;transform:scaleY(1);box-shadow:none}100%{opacity:.5;transform:scaleY(1)}}
+@keyframes zf-bar{0%{filter:brightness(2.2)}10%{filter:brightness(1)}100%{filter:brightness(1)}}
+@keyframes zf-dot{0%{transform:translate(-50%,-50%) scale(1.25);box-shadow:0 0 40px 14px rgba(246,240,255,.85)}35%{transform:translate(-50%,-50%) scale(1);box-shadow:0 0 18px 4px rgba(246,240,255,.5)}100%{transform:translate(-50%,-50%) scale(1);box-shadow:0 0 18px 4px rgba(246,240,255,.5)}}
+@keyframes zf-float{0%{transform:translateY(0)}50%{transform:translateY(-14px)}100%{transform:translateY(0)}}
+@keyframes zf-scan{from{background-position:0 0}to{background-position:0 64px}}
+@keyframes zf-type{0%,100%{opacity:.25}50%{opacity:1}}
+.zf-marker{animation:zf-hit 8s linear infinite;transform-origin:bottom}
+.zf-playhead{animation:zf-play 8s linear infinite}
+.zf-dot{animation:zf-dot .4138s ease-out infinite}
+.zf-float{animation:zf-float 6s ease-in-out infinite}
+.zf-grid{animation:zf-scan 4s linear infinite}
+.zf-typing span{animation:zf-type 1.2s ease-in-out infinite}
+.zf-typing span:nth-child(2){animation-delay:.2s}
+.zf-typing span:nth-child(3){animation-delay:.4s}
+@keyframes zf-orb{0%{transform:translate(0,0) scale(1)}33%{transform:translate(90px,-50px) scale(1.18)}66%{transform:translate(-60px,40px) scale(.92)}100%{transform:translate(0,0) scale(1)}}
+@keyframes zf-rise{0%{transform:translateY(0) scale(.4);opacity:0}12%{opacity:1}100%{transform:translateY(-520px) scale(1.1);opacity:0}}
+@keyframes zf-ring{0%{transform:translate(-50%,-50%) scale(.25);opacity:.85}100%{transform:translate(-50%,-50%) scale(3.2);opacity:0}}
+@keyframes zf-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes zf-reveal{from{opacity:0;transform:translateY(60px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes zf-pop{0%,6%{opacity:0;transform:translateY(14px) scale(.98)}12%,90%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-6px)}}
+@keyframes zf-shine{from{background-position:200% 0}to{background-position:-200% 0}}
+@keyframes zf-eq{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.5)}}
+@keyframes zf-spin{to{transform:rotate(360deg)}}
+@keyframes zf-blink{0%,100%{opacity:1}50%{opacity:.35}}
+.zf-orb{animation:zf-orb 18s ease-in-out infinite}
+@keyframes zf-kick{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(13deg)}}
+@keyframes zf-breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.zf-kick{animation:zf-kick 1.655s ease-in-out infinite}
+.zf-breathe{animation:zf-breathe 3.31s ease-in-out infinite}
+.zf-spark{animation:zf-rise linear infinite}
+.zf-ring{animation:zf-ring 1.655s cubic-bezier(.2,.7,.3,1) infinite}
+.zf-marquee{animation:zf-marquee 28s linear infinite}
+.zf-reveal{animation:zf-reveal linear both;animation-timeline:view();animation-range:entry 0% entry 60%}
+.zf-pop{animation:zf-pop 12s ease-out infinite both}
+.zf-shine{background:linear-gradient(100deg,#B8A5F8 20%,#F6F0FF 45%,#B8A5F8 70%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:zf-shine 5s linear infinite}
+.zf-bar{transform-origin:center;animation:zf-eq .8276s ease-in-out infinite}
+.zf-spin{animation:zf-spin 40s linear infinite}
+.zf-blink{animation:zf-blink 1.2s ease-in-out infinite}
+.zf-card{transition:transform .4s cubic-bezier(.2,.8,.2,1),border-color .4s,box-shadow .4s,background .4s}
+.zf-card:hover{transform:translateY(-8px) rotate(-.4deg);border-color:#5B4E80;background:#16131F;box-shadow:0 34px 70px -30px rgba(184,165,248,.55)}
+.zf-btn{transition:transform .25s,box-shadow .25s}
+@keyframes zf-cycle{0%{opacity:0;transform:translateY(8px)}3%,17%{opacity:1;transform:none}20%,100%{opacity:0;transform:translateY(-8px)}}
+.zf-cycle{opacity:0;animation:zf-cycle 15s ease infinite}
+.zf-nav{position:relative;transition:color .2s}
+.zf-nav:hover{color:#FFFFFF !important}
+.zf-nav::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:#B8A5F8;transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.zf-nav:hover::after{transform:scaleX(1)}
+.zf-btn2{transition:transform .25s,border-color .25s,background .25s,box-shadow .25s}
+.zf-btn2:hover{transform:translateY(-3px);border-color:#B8A5F8 !important;background:#1A1626;box-shadow:0 16px 44px -18px rgba(184,165,248,.8)}
+.zf-btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 18px 50px -12px rgba(184,165,248,.9)}
+@supports not (animation-timeline: view()){.zf-reveal{animation:none}}
+@media (prefers-reduced-motion: reduce){.zf-marker,.zf-playhead,.zf-dot,.zf-float,.zf-grid,.zf-typing span,.zf-orb,.zf-spark,.zf-ring,.zf-marquee,.zf-reveal,.zf-pop,.zf-shine,.zf-bar,.zf-spin,.zf-blink,.zf-kick,.zf-breathe{animation:none}.zf-cycle{animation:none}.zf-cycle:first-child{opacity:1}.zf-spark,.zf-ring{display:none}}
+</style>
+</head>
+<body>
+<div style="background: #0B0A0F; color: #EDEAF5; font-family: 'Manrope', system-ui, sans-serif; min-height: 100vh; overflow-x: clip">
+
+<header style="position: sticky; top: 0; z-index: 20; background: rgba(11,10,15,.82); backdrop-filter: blur(14px); border-bottom: 1px solid #1F1C28">
+<nav aria-label="Main" style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(16px, 4vw, 48px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<a href="#top" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #EDEAF5">
+<img src="assets/logo.png" alt="" style="width: 36px; height: 36px; border-radius: 10px">
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 16px; letter-spacing: .02em">Zenframe Labs</span>
+</a>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 26px; font-size: 15px; font-weight: 500">
+<a href="#zeni" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Meet Zeni</a>
+<a href="#features" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Features</a>
+<a href="#changelog" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Changelog</a>
+<a href="#community" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Discord</a>
+<a class="zf-btn" href="#get" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; background: #B8A5F8; color: #17112A; font-weight: 700; text-decoration: none">Get Zenframe Assistant</a>
+</div>
+</nav>
+</header>
+
+<section id="top" style="position: relative; padding: clamp(56px, 8vw, 110px) 0 40px">
+<div aria-hidden="true" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none">
+<div class="zf-orb" style="position: absolute; left: 52%; top: -120px; width: 620px; height: 620px; border-radius: 50%; background: radial-gradient(circle, rgba(143,122,230,.38) 0%, rgba(143,122,230,0) 65%)"></div>
+<div class="zf-orb" style="position: absolute; left: -160px; top: 280px; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(circle, rgba(184,165,248,.18) 0%, rgba(184,165,248,0) 65%); animation-delay: -7s; animation-duration: 24s"></div>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 33.1%; width: 2.9px; height: 2.9px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 12px 2px #F6F0FF; animation-duration: 15.4s; animation-delay: -6.1s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 25.3%; width: 5.8px; height: 5.8px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 10.9s; animation-delay: -6.0s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 95.0%; width: 4.9px; height: 4.9px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 12px 2px #F6F0FF; animation-duration: 10.3s; animation-delay: -10.1s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 1.7%; width: 5.6px; height: 5.6px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 13.6s; animation-delay: -13.8s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 23.5%; width: 3.3px; height: 3.3px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 12px 2px #F6F0FF; animation-duration: 14.6s; animation-delay: -10.0s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 34.8%; width: 3.3px; height: 3.3px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 12px 2px #F6F0FF; animation-duration: 13.5s; animation-delay: -1.7s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 50.6%; width: 4.1px; height: 4.1px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 9.5s; animation-delay: -9.0s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 38.1%; width: 3.3px; height: 3.3px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 7.2s; animation-delay: -7.2s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 93.7%; width: 5.6px; height: 5.6px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 12.0s; animation-delay: -2.9s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 88.2%; width: 2.7px; height: 2.7px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 12.9s; animation-delay: -9.1s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 77.4%; width: 2.1px; height: 2.1px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 12px 2px #F6F0FF; animation-duration: 7.6s; animation-delay: -15.1s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 80.2%; width: 4.4px; height: 4.4px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 15.5s; animation-delay: -15.2s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 22.8%; width: 5.7px; height: 5.7px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 15.5s; animation-delay: -15.3s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 49.9%; width: 4.2px; height: 4.2px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 7.5s; animation-delay: -3.0s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 2.6%; width: 3.7px; height: 3.7px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 12px 2px #F6F0FF; animation-duration: 15.7s; animation-delay: -8.0s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 62.7%; width: 5.5px; height: 5.5px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 9.1s; animation-delay: -13.1s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 63.8%; width: 5.8px; height: 5.8px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 7.6s; animation-delay: -4.1s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 69.2%; width: 4.1px; height: 4.1px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 12px 2px #F6F0FF; animation-duration: 13.3s; animation-delay: -14.4s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 16.2%; width: 2.4px; height: 2.4px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 12px 2px #F6F0FF; animation-duration: 12.5s; animation-delay: -3.7s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 27.4%; width: 3.3px; height: 3.3px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 12px 2px #F6F0FF; animation-duration: 8.6s; animation-delay: -3.9s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 88.3%; width: 5.7px; height: 5.7px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 12px 2px #F6F0FF; animation-duration: 9.2s; animation-delay: -4.0s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 91.8%; width: 4.8px; height: 4.8px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 12px 2px #F6F0FF; animation-duration: 8.3s; animation-delay: -4.5s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 49.2%; width: 5.0px; height: 5.0px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 12px 2px #F6F0FF; animation-duration: 11.5s; animation-delay: -3.7s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 68.4%; width: 5.1px; height: 5.1px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 13.1s; animation-delay: -9.9s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 97.7%; width: 4.9px; height: 4.9px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 15.3s; animation-delay: -0.8s"></span>
+
+<span class="zf-spark" style="position: absolute; bottom: -20px; left: 37.4%; width: 3.2px; height: 3.2px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 12px 2px #B8A5F8; animation-duration: 7.7s; animation-delay: -4.7s"></span>
+
+</div>
+<div class="zf-grid" aria-hidden="true" style="position: absolute; inset: 0; background-image: linear-gradient(rgba(184,165,248,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(184,165,248,.06) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(ellipse at 60% 30%, #000 0%, transparent 70%); -webkit-mask-image: radial-gradient(ellipse at 60% 30%, #000 0%, transparent 70%)"></div>
+<div style="position: relative; max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px); display: flex; flex-wrap: wrap; align-items: center; gap: 40px">
+<div style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+<div style="display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; padding: 8px 14px; border: 1px solid #2C2738; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #CFC2FF">
+<span style="width: 8px; height: 8px; border-radius: 50%; background: #F6F0FF; box-shadow: 0 0 10px 2px rgba(246,240,255,.7)"></span>
+<span data-zf="pill">Zenframe Assistant 1.5.1 is out</span>
+</div>
+<h1 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: clamp(40px, 6.4vw, 84px); line-height: 1.02; letter-spacing: -.02em">Edit on the beat.<br><span class="zf-shine">Skip the busywork.</span></h1>
+<p style="margin: 0; max-width: 560px; font-size: clamp(17px, 1.6vw, 20px); line-height: 1.6; color: #B5AFC6">Zenframe Labs makes After Effects tools for editors. Zenframe Assistant puts Zeni in your panel: an assistant that hears your music, sees your frames and handles the repetitive parts, so the cuts and the timing stay yours.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 14px">
+<a class="zf-btn" href="https://github.com/ItSoru/zenframe-assistant/releases/latest" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 14px; background: #B8A5F8; color: #17112A; font-weight: 700; font-size: 16px; text-decoration: none; box-shadow: 0 10px 40px -10px rgba(184,165,248,.7)">Get Zenframe Assistant
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a class="zf-btn2" href="#community" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 24px; border-radius: 14px; border: 1px solid #3A3448; color: #EDEAF5; font-weight: 600; font-size: 16px; text-decoration: none">Join the Discord</a>
+</div>
+</div>
+<div style="flex: 1 1 340px; min-width: 0; display: flex; justify-content: center">
+<div class="zf-float" style="position: relative; width: min(440px, 100%); aspect-ratio: 1 / 1">
+<img src="assets/logo-glow.png" alt="Zenframe Labs logo" style="width: 100%; height: 100%; display: block; border-radius: 40px; mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 72%); -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 72%)">
+<div class="zf-spin" aria-hidden="true" style="position: absolute; inset: -6%; border-radius: 50%; border: 1px dashed rgba(184,165,248,.25)"></div>
+<div class="zf-ring" aria-hidden="true" style="position: absolute; left: 63.25%; top: 49.75%; width: 9.4%; aspect-ratio: 1 / 1; border-radius: 50%; border: 2px solid rgba(246,240,255,.8)"></div>
+<div class="zf-ring" aria-hidden="true" style="position: absolute; left: 63.25%; top: 49.75%; width: 9.4%; aspect-ratio: 1 / 1; border-radius: 50%; border: 2px solid rgba(184,165,248,.8); animation-delay: .8276s"></div>
+<div class="zf-dot" aria-hidden="true" style="position: absolute; left: 63.25%; top: 49.75%; width: 9.4%; aspect-ratio: 1 / 1; border-radius: 50%; background: #F6F0FF; transform: translate(-50%,-50%)"></div>
+</div>
+</div>
+</div>
+
+<div style="position: relative; max-width: 1240px; margin: 56px auto 0; padding: 0 clamp(16px, 4vw, 48px)">
+<div style="border: 1px solid #262230; border-radius: 22px; background: #110F17; box-shadow: 0 40px 120px -40px rgba(143,122,230,.45); overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-bottom: 1px solid #221F2B">
+<div style="display: flex; align-items: center; gap: 14px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #A49FB4">
+<span style="color: #EDEAF5">Comp 1</span>
+<span>Example song</span>
+<span style="padding: 4px 10px; border-radius: 8px; background: #1C1826; color: #CFC2FF">145 BPM</span>
+</div>
+<div style="position: relative; height: 32px; flex: 1 1 280px; max-width: 460px">
+
+<span class="zf-cycle" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-end; gap: 9px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #CFC2FF; white-space: nowrap; animation-delay: 0s"><span style="width: 7px; height: 7px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 8px 2px rgba(184,165,248,.7)"></span>Zeni found 3 shake presets in your library</span>
+
+<span class="zf-cycle" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-end; gap: 9px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #CFC2FF; white-space: nowrap; animation-delay: 3s"><span style="width: 7px; height: 7px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 8px 2px rgba(184,165,248,.7)"></span>Zeni staged a script for you to review</span>
+
+<span class="zf-cycle" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-end; gap: 9px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #CFC2FF; white-space: nowrap; animation-delay: 6s"><span style="width: 7px; height: 7px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 8px 2px rgba(184,165,248,.7)"></span>Zeni studied how your .aep is built</span>
+
+<span class="zf-cycle" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-end; gap: 9px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #CFC2FF; white-space: nowrap; animation-delay: 9s"><span style="width: 7px; height: 7px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 8px 2px rgba(184,165,248,.7)"></span>Zeni looked at 6 rendered frames</span>
+
+<span class="zf-cycle" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-end; gap: 9px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #CFC2FF; white-space: nowrap; animation-delay: 12s"><span style="width: 7px; height: 7px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 8px 2px rgba(184,165,248,.7)"></span>Zeni marked the strong bass hits</span>
+
+</div>
+</div>
+<div style="position: relative; padding: 0 18px">
+<div aria-hidden="true" style="display: flex; justify-content: space-between; padding: 10px 0 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6F6980">
+<span>0:00</span><span>0:01</span><span>0:02</span><span>0:03</span><span>0:04</span><span>0:05</span><span>0:06</span><span>0:07</span><span>0:08</span>
+</div>
+<div style="position: relative; height: 34px; border-top: 1px solid #221F2B">
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 1.50%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #B8A5F8; opacity: .5; animation-delay: 0.120s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 17.02%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #B8A5F8; opacity: .5; animation-delay: 1.361s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 22.19%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #B8A5F8; opacity: .5; animation-delay: 1.775s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 37.71%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #B8A5F8; opacity: .5; animation-delay: 3.017s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 42.88%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #B8A5F8; opacity: .5; animation-delay: 3.430s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 58.40%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #B8A5F8; opacity: .5; animation-delay: 4.672s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 63.57%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #B8A5F8; opacity: .5; animation-delay: 5.086s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 73.91%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #B8A5F8; opacity: .5; animation-delay: 5.913s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 84.26%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #B8A5F8; opacity: .5; animation-delay: 6.741s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 9.26%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #B8A5F8; opacity: .5; animation-delay: 0.741s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 50.64%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #B8A5F8; opacity: .5; animation-delay: 4.051s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 11.84%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #D9CFFF; opacity: .5; animation-delay: 0.948s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 32.53%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #D9CFFF; opacity: .5; animation-delay: 2.603s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 53.22%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #D9CFFF; opacity: .5; animation-delay: 4.258s"></div>
+
+<div class="zf-marker" style="position: absolute; top: 6px; left: 94.60%; width: 10px; height: 22px; margin-left: -5px; border-radius: 3px 3px 5px 5px; background: #D9CFFF; opacity: .5; animation-delay: 7.568s"></div>
+
+</div>
+<div role="img" aria-label="Audio waveform with comp markers on the hits" style="position: relative; height: clamp(110px, 14vw, 170px); display: flex; align-items: center; gap: 2px; padding: 8px 0 18px">
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 24%; border-radius: 2px; background: #3A3450; animation-delay: 0.000s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 99%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.052s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 89%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.103s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 79%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.155s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 69%; border-radius: 2px; background: #3A3450; animation-delay: -0.207s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 59%; border-radius: 2px; background: #3A3450; animation-delay: -0.259s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 49%; border-radius: 2px; background: #3A3450; animation-delay: -0.310s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 32%; border-radius: 2px; background: #3A3450; animation-delay: -0.362s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 26%; border-radius: 2px; background: #3A3450; animation-delay: -0.414s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 22%; border-radius: 2px; background: #3A3450; animation-delay: -0.465s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 20%; border-radius: 2px; background: #3A3450; animation-delay: -0.517s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 92%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.569s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 82%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.620s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 72%; border-radius: 2px; background: #3A3450; animation-delay: -0.672s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 67%; border-radius: 2px; background: #3A3450; animation-delay: -0.724s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 56%; border-radius: 2px; background: #3A3450; animation-delay: -0.776s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 46%; border-radius: 2px; background: #3A3450; animation-delay: 0.000s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 17%; border-radius: 2px; background: #3A3450; animation-delay: -0.052s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 25%; border-radius: 2px; background: #3A3450; animation-delay: -0.103s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 24%; border-radius: 2px; background: #3A3450; animation-delay: -0.155s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 95%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.207s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 85%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.259s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 75%; border-radius: 2px; background: #3A3450; animation-delay: -0.310s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 65%; border-radius: 2px; background: #3A3450; animation-delay: -0.362s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 55%; border-radius: 2px; background: #3A3450; animation-delay: -0.414s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 45%; border-radius: 2px; background: #3A3450; animation-delay: -0.465s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 97%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.517s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 87%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.569s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 77%; border-radius: 2px; background: #3A3450; animation-delay: -0.620s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 67%; border-radius: 2px; background: #3A3450; animation-delay: -0.672s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 57%; border-radius: 2px; background: #3A3450; animation-delay: -0.724s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 47%; border-radius: 2px; background: #3A3450; animation-delay: -0.776s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 17%; border-radius: 2px; background: #3A3450; animation-delay: 0.000s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 34%; border-radius: 2px; background: #3A3450; animation-delay: -0.052s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 23%; border-radius: 2px; background: #3A3450; animation-delay: -0.103s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 19%; border-radius: 2px; background: #3A3450; animation-delay: -0.155s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 25%; border-radius: 2px; background: #3A3450; animation-delay: -0.207s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 21%; border-radius: 2px; background: #3A3450; animation-delay: -0.259s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 17%; border-radius: 2px; background: #3A3450; animation-delay: -0.310s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 65%; border-radius: 2px; background: #3A3450; animation-delay: -0.362s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 54%; border-radius: 2px; background: #3A3450; animation-delay: -0.414s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 44%; border-radius: 2px; background: #3A3450; animation-delay: -0.465s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 16%; border-radius: 2px; background: #3A3450; animation-delay: -0.517s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 33%; border-radius: 2px; background: #3A3450; animation-delay: -0.569s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 19%; border-radius: 2px; background: #3A3450; animation-delay: -0.620s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 93%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.672s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 83%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.724s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 73%; border-radius: 2px; background: #3A3450; animation-delay: -0.776s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 63%; border-radius: 2px; background: #3A3450; animation-delay: 0.000s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 53%; border-radius: 2px; background: #3A3450; animation-delay: -0.052s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 29%; border-radius: 2px; background: #3A3450; animation-delay: -0.103s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 96%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.155s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 86%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.207s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 76%; border-radius: 2px; background: #3A3450; animation-delay: -0.259s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 66%; border-radius: 2px; background: #3A3450; animation-delay: -0.310s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 56%; border-radius: 2px; background: #3A3450; animation-delay: -0.362s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 46%; border-radius: 2px; background: #3A3450; animation-delay: -0.414s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 22%; border-radius: 2px; background: #3A3450; animation-delay: -0.465s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 28%; border-radius: 2px; background: #3A3450; animation-delay: -0.517s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 27%; border-radius: 2px; background: #3A3450; animation-delay: -0.569s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 99%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.620s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 89%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.672s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 79%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.724s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 69%; border-radius: 2px; background: #3A3450; animation-delay: -0.776s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 63%; border-radius: 2px; background: #3A3450; animation-delay: 0.000s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 53%; border-radius: 2px; background: #3A3450; animation-delay: -0.052s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 42%; border-radius: 2px; background: #3A3450; animation-delay: -0.103s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 23%; border-radius: 2px; background: #3A3450; animation-delay: -0.155s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 19%; border-radius: 2px; background: #3A3450; animation-delay: -0.207s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 19%; border-radius: 2px; background: #3A3450; animation-delay: -0.259s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 92%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.310s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 82%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.362s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 72%; border-radius: 2px; background: #3A3450; animation-delay: -0.414s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 62%; border-radius: 2px; background: #3A3450; animation-delay: -0.465s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 52%; border-radius: 2px; background: #3A3450; animation-delay: -0.517s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 33%; border-radius: 2px; background: #3A3450; animation-delay: -0.569s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 94%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.620s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 84%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.672s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 74%; border-radius: 2px; background: #3A3450; animation-delay: -0.724s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 64%; border-radius: 2px; background: #3A3450; animation-delay: -0.776s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 54%; border-radius: 2px; background: #3A3450; animation-delay: 0.000s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 44%; border-radius: 2px; background: #3A3450; animation-delay: -0.052s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 20%; border-radius: 2px; background: #3A3450; animation-delay: -0.103s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 21%; border-radius: 2px; background: #3A3450; animation-delay: -0.155s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 18%; border-radius: 2px; background: #3A3450; animation-delay: -0.207s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 22%; border-radius: 2px; background: #3A3450; animation-delay: -0.259s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 28%; border-radius: 2px; background: #3A3450; animation-delay: -0.310s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 29%; border-radius: 2px; background: #3A3450; animation-delay: -0.362s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 98%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.414s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 88%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.465s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 78%; border-radius: 2px; background: #3A3450; animation-delay: -0.517s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 68%; border-radius: 2px; background: #3A3450; animation-delay: -0.569s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 58%; border-radius: 2px; background: #3A3450; animation-delay: -0.620s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 48%; border-radius: 2px; background: #3A3450; animation-delay: -0.672s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 16%; border-radius: 2px; background: #3A3450; animation-delay: -0.724s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 34%; border-radius: 2px; background: #3A3450; animation-delay: -0.776s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 23%; border-radius: 2px; background: #3A3450; animation-delay: 0.000s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 31%; border-radius: 2px; background: #3A3450; animation-delay: -0.052s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 26%; border-radius: 2px; background: #3A3450; animation-delay: -0.103s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 23%; border-radius: 2px; background: #3A3450; animation-delay: -0.155s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 17%; border-radius: 2px; background: #3A3450; animation-delay: -0.207s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 92%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.259s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 82%; border-radius: 2px; background: #B8A5F8; animation-delay: -0.310s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 72%; border-radius: 2px; background: #3A3450; animation-delay: -0.362s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 62%; border-radius: 2px; background: #3A3450; animation-delay: -0.414s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 52%; border-radius: 2px; background: #3A3450; animation-delay: -0.465s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 28%; border-radius: 2px; background: #3A3450; animation-delay: -0.517s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 28%; border-radius: 2px; background: #3A3450; animation-delay: -0.569s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 27%; border-radius: 2px; background: #3A3450; animation-delay: -0.620s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 31%; border-radius: 2px; background: #3A3450; animation-delay: -0.672s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 19%; border-radius: 2px; background: #3A3450; animation-delay: -0.724s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 31%; border-radius: 2px; background: #3A3450; animation-delay: -0.776s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 17%; border-radius: 2px; background: #3A3450; animation-delay: 0.000s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 70%; border-radius: 2px; background: #3A3450; animation-delay: -0.052s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 60%; border-radius: 2px; background: #3A3450; animation-delay: -0.103s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 49%; border-radius: 2px; background: #3A3450; animation-delay: -0.155s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 25%; border-radius: 2px; background: #3A3450; animation-delay: -0.207s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 31%; border-radius: 2px; background: #3A3450; animation-delay: -0.259s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 31%; border-radius: 2px; background: #3A3450; animation-delay: -0.310s"></div>
+
+<div class="zf-bar" style="flex: 1 1 0; min-width: 1px; height: 17%; border-radius: 2px; background: #3A3450; animation-delay: -0.362s"></div>
+
+<div class="zf-playhead" aria-hidden="true" style="position: absolute; top: -40px; bottom: 0; left: 0; width: 2px; background: #F6F0FF; box-shadow: 0 0 14px 2px rgba(246,240,255,.6)"></div>
+</div>
+</div>
+</div>
+<p style="margin: 14px 4px 0; font-size: 14px; color: #8A849B">Zeni works right inside your comp: he hears the music, looks at your frames and takes care of the repetitive steps you hand him.</p>
+</div>
+</section>
+
+<div aria-hidden="true" style="overflow: hidden; border-top: 1px solid #1C1924; border-bottom: 1px solid #1C1924; background: #0F0D15; padding: 22px 0">
+<div class="zf-marquee" style="display: flex; width: max-content; gap: 48px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: clamp(22px, 3vw, 38px); white-space: nowrap">
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #EDEAF5">Flow AMV<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #B8A5F8">MMV<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #EDEAF5">Velocity<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #B8A5F8">Jugg<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #EDEAF5">Mograph<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #B8A5F8">Beat markers<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #EDEAF5">Cut on the hit<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #B8A5F8">Your edit<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #EDEAF5">Flow AMV<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #B8A5F8">MMV<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #EDEAF5">Velocity<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #B8A5F8">Jugg<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #EDEAF5">Mograph<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #B8A5F8">Beat markers<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #EDEAF5">Cut on the hit<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+<span style="display: inline-flex; align-items: center; gap: 48px; color: #B8A5F8">Your edit<span style="width: 10px; height: 10px; border-radius: 50%; background: #B8A5F8; box-shadow: 0 0 14px 3px rgba(184,165,248,.7)"></span></span>
+
+</div>
+</div>
+
+<section id="zeni" style="padding: clamp(72px, 9vw, 130px) 0">
+<div class="zf-reveal" style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px); display: flex; flex-wrap: wrap; align-items: center; gap: 56px">
+<div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #B8A5F8">Meet Zeni</div>
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: clamp(30px, 4vw, 52px); line-height: 1.08; letter-spacing: -.01em">An assistant that lives in your panel and vibes to your comp.</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.65; color: #B5AFC6">Ask in plain words. Zeni reads the project, listens to the music and does the work in After Effects. Anything that changes your project shows up as a card first, so nothing happens without your yes, and it is one Undo away.</p>
+<img src="assets/zeni-sway.webp" alt="Zeni lying on his stomach, chin in his hands, swaying his feet" style="align-self: flex-start; width: min(400px, 100%); aspect-ratio: 1 / 1; margin: -30px 0 -50px -14px; display: block">
+</div>
+<div style="flex: 1 1 460px; min-width: 0">
+<div style="border: 1px solid #2A2535; border-radius: 22px; background: #121018; overflow: hidden; box-shadow: 0 40px 100px -50px rgba(143,122,230,.6)">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-bottom: 1px solid #221F2B">
+<div style="display: flex; align-items: center; gap: 10px">
+<img src="assets/logo.png" alt="" style="width: 26px; height: 26px; border-radius: 7px">
+<span style="font-weight: 700">Zeni</span>
+</div>
+<span style="padding: 5px 12px; border-radius: 999px; background: #1E1A28; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #CFC2FF">Edit project</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding: 20px 18px 22px">
+<div class="zf-pop" style="align-self: flex-end; max-width: 80%; padding: 12px 16px; border-radius: 16px 16px 4px 16px; background: #2A2240; font-size: 15px; line-height: 1.5">Find me a shake preset and put it on the Title layer.</div>
+<div class="zf-pop" style="animation-delay: .9s; align-self: flex-start; display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 12px; background: #17141F; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #A49FB4">
+<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8A5F8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l3-8 4 16 3-8h5"></path></svg>
+Searched your presets
+<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+</div>
+<div class="zf-pop" style="animation-delay: 1.8s; align-self: flex-start; max-width: 86%; padding: 12px 16px; border-radius: 16px 16px 16px 4px; background: #1A1722; font-size: 15px; line-height: 1.55; color: #DCD7E8">Found Shake Strong.ffx in your User Presets. Want me to put it on Title?</div>
+<div class="zf-pop" style="animation-delay: 2.6s; border: 1px solid #3A3150; border-radius: 16px; background: #18142250; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px">
+<span style="font-weight: 700">Apply preset</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #A49FB4">1 layer</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #DCD7E8">
+<span style="padding: 6px 10px; border-radius: 8px; background: #221D30">Title</span>
+<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8A5F8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+<span style="padding: 6px 10px; border-radius: 8px; background: #221D30">Shake Strong.ffx</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<button type="button" style="min-height: 44px; padding: 0 20px; border: 0; border-radius: 12px; background: #B8A5F8; color: #17112A; font: 700 15px 'Manrope', sans-serif; cursor: pointer">Apply</button>
+<button type="button" style="min-height: 44px; padding: 0 18px; border: 1px solid #3A3448; border-radius: 12px; background: transparent; color: #DCD7E8; font: 600 15px 'Manrope', sans-serif; cursor: pointer">Not now</button>
+</div>
+</div>
+<div class="zf-typing" aria-hidden="true" style="display: flex; gap: 6px; padding: 4px 6px">
+<span style="width: 7px; height: 7px; border-radius: 50%; background: #B8A5F8"></span>
+<span style="width: 7px; height: 7px; border-radius: 50%; background: #B8A5F8"></span>
+<span style="width: 7px; height: 7px; border-radius: 50%; background: #B8A5F8"></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="features" style="padding: 0 0 clamp(72px, 9vw, 130px)">
+<div class="zf-reveal" style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px); display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px">
+<h2 style="margin: 0; max-width: 720px; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: clamp(28px, 3.6vw, 46px); line-height: 1.1">Built around how editors actually work.</h2>
+<p style="margin: 0; max-width: 380px; font-size: 16px; line-height: 1.6; color: #A49FB4">Every feature is there to save you clicks, never to make the edit for you.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px">
+
+<div class="zf-card" style="position: relative; padding: 26px 24px 28px; border-radius: 20px; background: #121018; border: 1px solid #221F2B; display: flex; flex-direction: column; gap: 14px; min-height: 190px; box-sizing: border-box">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #1E1A2A; display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; color: #B8A5F8">01</span>
+<span style="width: 8px; height: 8px; border-radius: 50%; background: #3E3750"></span>
+</div>
+<h3 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.3">Hears your music</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #A49FB4">Reads the BPM and finds the real hits, so markers and timing line up with what you hear.</p>
+</div>
+
+<div class="zf-card" style="position: relative; padding: 26px 24px 28px; border-radius: 20px; background: #121018; border: 1px solid #221F2B; display: flex; flex-direction: column; gap: 14px; min-height: 190px; box-sizing: border-box">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #1E1A2A; display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; color: #B8A5F8">02</span>
+<span style="width: 8px; height: 8px; border-radius: 50%; background: #3E3750"></span>
+</div>
+<h3 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.3">Comp markers on the hits</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #A49FB4">Strong bass, bass and snare, or every beat. Each marker lands on the frame the hit starts.</p>
+</div>
+
+<div class="zf-card" style="position: relative; padding: 26px 24px 28px; border-radius: 20px; background: #121018; border: 1px solid #221F2B; display: flex; flex-direction: column; gap: 14px; min-height: 190px; box-sizing: border-box">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #1E1A2A; display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; color: #B8A5F8">03</span>
+<span style="width: 8px; height: 8px; border-radius: 50%; background: #3E3750"></span>
+</div>
+<h3 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.3">Sees your frames</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #A49FB4">Zeni can look at rendered frames and video references to understand what you are going for.</p>
+</div>
+
+<div class="zf-card" style="position: relative; padding: 26px 24px 28px; border-radius: 20px; background: #121018; border: 1px solid #221F2B; display: flex; flex-direction: column; gap: 14px; min-height: 190px; box-sizing: border-box">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #1E1A2A; display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; color: #B8A5F8">04</span>
+<span style="width: 8px; height: 8px; border-radius: 50%; background: #3E3750"></span>
+</div>
+<h3 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.3">Knows editing styles</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #A49FB4">Flow AMV, jugg, velocity, mograph and MMV, so you can talk to Zeni the way editors talk.</p>
+</div>
+
+<div class="zf-card" style="position: relative; padding: 26px 24px 28px; border-radius: 20px; background: #121018; border: 1px solid #221F2B; display: flex; flex-direction: column; gap: 14px; min-height: 190px; box-sizing: border-box">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #1E1A2A; display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; color: #B8A5F8">05</span>
+<span style="width: 8px; height: 8px; border-radius: 50%; background: #3E3750"></span>
+</div>
+<h3 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.3">Studies your project</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #A49FB4">Reads your .aep project to learn how your comps are built before touching anything.</p>
+</div>
+
+<div class="zf-card" style="position: relative; padding: 26px 24px 28px; border-radius: 20px; background: #121018; border: 1px solid #221F2B; display: flex; flex-direction: column; gap: 14px; min-height: 190px; box-sizing: border-box">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #1E1A2A; display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; color: #B8A5F8">06</span>
+<span style="width: 8px; height: 8px; border-radius: 50%; background: #3E3750"></span>
+</div>
+<h3 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.3">Voice input</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #A49FB4">Talk to Zeni instead of typing when your hands are busy on the timeline.</p>
+</div>
+
+<div class="zf-card" style="position: relative; padding: 26px 24px 28px; border-radius: 20px; background: #121018; border: 1px solid #221F2B; display: flex; flex-direction: column; gap: 14px; min-height: 190px; box-sizing: border-box">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #1E1A2A; display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; color: #B8A5F8">07</span>
+<span style="width: 8px; height: 8px; border-radius: 50%; background: #3E3750"></span>
+</div>
+<h3 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.3">Asks before it edits</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #A49FB4">Draft scripts or edit the project directly. Every change shows a card first and is one Undo away.</p>
+</div>
+
+<div class="zf-card" style="position: relative; padding: 26px 24px 28px; border-radius: 20px; background: #121018; border: 1px solid #221F2B; display: flex; flex-direction: column; gap: 14px; min-height: 190px; box-sizing: border-box">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #1E1A2A; display: flex; align-items: center; justify-content: center; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 15px; color: #B8A5F8">08</span>
+<span style="width: 8px; height: 8px; border-radius: 50%; background: #3E3750"></span>
+</div>
+<h3 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 600; font-size: 18px; line-height: 1.3">Vibes with you</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #A49FB4">Zeni dances to your comp on playback, with headphone effects that fire on the drums.</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<section style="padding: 0 clamp(16px, 4vw, 48px) clamp(72px, 9vw, 130px)">
+<div class="zf-reveal" style="position: relative; max-width: 1240px; margin: 0 auto; padding: clamp(48px, 7vw, 96px) clamp(24px, 5vw, 80px); border-radius: 32px; background: #B8A5F8; color: #17112A; overflow: hidden; box-sizing: border-box">
+<div aria-hidden="true" style="position: absolute; right: clamp(24px, 6vw, 90px); top: 50%; width: clamp(80px, 12vw, 160px); aspect-ratio: 1 / 1; border-radius: 50%; background: #F6F0FF; transform: translateY(-50%); box-shadow: 0 0 80px 30px rgba(246,240,255,.6)"></div>
+<div style="position: relative; max-width: 760px; display: flex; flex-direction: column; gap: 20px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600">Our take</div>
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: clamp(30px, 4.6vw, 60px); line-height: 1.05">Your edit.<br>Just faster.</h2>
+<p style="margin: 0; font-size: clamp(17px, 1.6vw, 20px); line-height: 1.6; color: #2A2140">Zenframe tools speed up the workflow. They never replace the editor and never make footage. The taste, the timing and the final cut are yours.</p>
+</div>
+</div>
+</section>
+
+<section id="changelog" style="padding: 0 0 clamp(72px, 9vw, 130px)">
+<div class="zf-reveal" style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px); display: flex; flex-wrap: wrap; gap: 48px">
+<div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #B8A5F8">Changelog</div>
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: clamp(28px, 3.6vw, 44px); line-height: 1.1">Always moving.</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #A49FB4">Every update is posted in the Zenframe Labs Discord first.</p>
+</div>
+<div style="flex: 999 1 560px; min-width: 0; border: 1px solid #262230; border-radius: 22px; background: #110F17; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 20px 24px; border-bottom: 1px solid #221F2B">
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 22px" data-zf="ver">Version 1.5.1</span>
+<span style="padding: 6px 12px; border-radius: 999px; background: #1E1A28; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #CFC2FF">Latest</span>
+</div>
+<ul data-zf="changes" style="margin: 0; padding: 10px 24px 22px; list-style: none; display: flex; flex-direction: column">
+
+<li style="display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid #1C1924">
+<span style="flex: 0 0 auto; margin-top: 7px; width: 8px; height: 8px; border-radius: 50%; background: #B8A5F8"></span>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-weight: 700; font-size: 16px">Markers on the music</span>
+<span style="font-size: 15px; line-height: 1.55; color: #A49FB4">Ask Zeni for comp markers on strong bass hits, snares or every beat.</span>
+</div>
+</li>
+
+<li style="display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid #1C1924">
+<span style="flex: 0 0 auto; margin-top: 7px; width: 8px; height: 8px; border-radius: 50%; background: #B8A5F8"></span>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-weight: 700; font-size: 16px">Exact hit timing</span>
+<span style="font-size: 15px; line-height: 1.55; color: #A49FB4">Hits and the beat grid land on the frame each sound starts.</span>
+</div>
+</li>
+
+<li style="display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid #1C1924">
+<span style="flex: 0 0 auto; margin-top: 7px; width: 8px; height: 8px; border-radius: 50%; background: #B8A5F8"></span>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-weight: 700; font-size: 16px">Better tempo reading</span>
+<span style="font-size: 15px; line-height: 1.55; color: #A49FB4">Songs that used to read at half speed now get the right BPM.</span>
+</div>
+</li>
+
+<li style="display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid #1C1924">
+<span style="flex: 0 0 auto; margin-top: 7px; width: 8px; height: 8px; border-radius: 50%; background: #B8A5F8"></span>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-weight: 700; font-size: 16px">Headphone effects follow the drums</span>
+<span style="font-size: 15px; line-height: 1.55; color: #A49FB4">Effects fire on real drum hits and never double up.</span>
+</div>
+</li>
+
+</ul>
+</div>
+</div>
+</section>
+
+<section id="get" style="position: relative; padding: clamp(72px, 9vw, 130px) 0; border-top: 1px solid #1C1924">
+<div class="zf-reveal" style="position: relative; max-width: 860px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 48px); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px">
+<img src="assets/logo.png" alt="" style="width: 96px; height: 96px; border-radius: 26px; box-shadow: 0 0 80px 10px rgba(184,165,248,.35)">
+<h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 800; font-size: clamp(32px, 5vw, 64px); line-height: 1.04">Bring Zeni into your comp.</h2>
+<p style="margin: 0; max-width: 560px; font-size: 18px; line-height: 1.6; color: #B5AFC6"><span data-zf="getline">Zenframe Assistant 1.5.1</span> for After Effects. One install file, then Zeni is in your panel.</p>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 14px" id="community">
+<a class="zf-btn" href="https://github.com/ItSoru/zenframe-assistant/releases/latest" style="display: inline-flex; align-items: center; min-height: 54px; padding: 0 28px; border-radius: 14px; background: #B8A5F8; color: #17112A; font-weight: 700; font-size: 16px; text-decoration: none" data-zf="dl">Download 1.5.1</a>
+<a class="zf-btn2" href="#community" style="display: inline-flex; align-items: center; min-height: 54px; padding: 0 26px; border-radius: 14px; border: 1px solid #3A3448; color: #EDEAF5; font-weight: 600; font-size: 16px; text-decoration: none">Join the Discord</a>
+</div>
+<a href="https://github.com/ItSoru/zenframe-assistant" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #A49FB4">Source on GitHub</a>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6F6980">[DISCORD INVITE]</span>
+</div>
+</section>
+
+<footer style="border-top: 1px solid #1C1924">
+<div style="max-width: 1240px; margin: 0 auto; padding: 32px clamp(16px, 4vw, 48px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; font-size: 14px; color: #8A849B">
+<div style="display: flex; align-items: center; gap: 12px">
+<img src="assets/logo.png" alt="" style="width: 28px; height: 28px; border-radius: 8px">
+<span style="font-family: 'Unbounded', sans-serif; font-weight: 600; color: #EDEAF5">Zenframe Labs</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+<a href="https://www.tiktok.com/@zenframe.labs" class="zf-nav" style="color: #C9C3D8; text-decoration: none">TikTok @zenframe.labs</a>
+<a href="#community" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Discord</a>
+<a href="#changelog" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Changelog</a>
+<a href="https://github.com/ItSoru/zenframe-assistant" class="zf-nav" style="color: #C9C3D8; text-decoration: none">GitHub</a>
+</div>
+<span>2026 Zenframe Labs</span>
+</div>
+</footer>
+
+</div>
+<script src="site.js" defer></script>
+</body>
+</html>
