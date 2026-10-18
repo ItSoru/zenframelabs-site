@@ -65,11 +65,12 @@ a{color:#CFC2FF}a:hover{color:#FFFFFF}
 .zf-nav:hover{color:#FFFFFF !important}
 .zf-nav::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:#B8A5F8;transform:scaleX(0);transform-origin:left;transition:transform .25s}
 .zf-nav:hover::after{transform:scaleX(1)}
-.zf-btn2{transition:transform .25s,border-color .25s,background .25s,box-shadow .25s}
-.zf-btn2:hover{transform:translateY(-3px);border-color:#B8A5F8 !important;background:#1A1626;box-shadow:0 16px 44px -18px rgba(184,165,248,.8)}
+@keyframes zf-glow{0%,100%{box-shadow:0 0 0 1px rgba(184,165,248,.35),0 0 22px -6px rgba(184,165,248,.45)}50%{box-shadow:0 0 0 1px rgba(184,165,248,.6),0 0 34px -4px rgba(184,165,248,.75)}}
+.zf-btn2{border-color:#7E6BC4 !important;background:#141120;animation:zf-glow 3.31s ease-in-out infinite;transition:transform .25s,border-color .25s,background .25s}
+.zf-btn2:hover{transform:translateY(-3px);border-color:#B8A5F8 !important;background:#1E1830;animation:none;box-shadow:0 0 0 1px rgba(184,165,248,.8),0 18px 48px -14px rgba(184,165,248,.9)}
 .zf-btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 18px 50px -12px rgba(184,165,248,.9)}
 @supports not (animation-timeline: view()){.zf-reveal{animation:none}}
-@media (prefers-reduced-motion: reduce){.zf-marker,.zf-playhead,.zf-dot,.zf-float,.zf-grid,.zf-typing span,.zf-orb,.zf-spark,.zf-ring,.zf-marquee,.zf-reveal,.zf-pop,.zf-shine,.zf-bar,.zf-spin,.zf-blink,.zf-kick,.zf-breathe{animation:none}.zf-cycle{animation:none}.zf-cycle:first-child{opacity:1}.zf-spark,.zf-ring{display:none}}
+@media (prefers-reduced-motion: reduce){.zf-marker,.zf-playhead,.zf-dot,.zf-float,.zf-grid,.zf-typing span,.zf-orb,.zf-spark,.zf-ring,.zf-marquee,.zf-reveal,.zf-pop,.zf-shine,.zf-bar,.zf-spin,.zf-blink,.zf-kick,.zf-breathe,.zf-btn2{animation:none}.zf-cycle{animation:none}.zf-cycle:first-child{opacity:1}.zf-spark,.zf-ring{display:none}}
 </style>
 </head>
 <body>
@@ -85,7 +86,7 @@ a{color:#CFC2FF}a:hover{color:#FFFFFF}
 <a href="#zeni" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Meet Zeni</a>
 <a href="#features" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Features</a>
 <a href="#changelog" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Changelog</a>
-<a href="#community" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Discord</a>
+<a href="https://discord.gg/wZ9gKmTUNa" target="_blank" rel="noopener" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Discord</a>
 <a class="zf-btn" href="#get" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; background: #B8A5F8; color: #17112A; font-weight: 700; text-decoration: none">Get Zenframe Assistant</a>
 </div>
 </nav>
@@ -161,7 +162,7 @@ a{color:#CFC2FF}a:hover{color:#FFFFFF}
 <div style="display: flex; flex-wrap: wrap; gap: 14px">
 <a class="zf-btn" href="https://github.com/ItSoru/zenframe-assistant/releases/latest" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 14px; background: #B8A5F8; color: #17112A; font-weight: 700; font-size: 16px; text-decoration: none; box-shadow: 0 10px 40px -10px rgba(184,165,248,.7)">Get Zenframe Assistant
 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
-<a class="zf-btn2" href="#community" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 24px; border-radius: 14px; border: 1px solid #3A3448; color: #EDEAF5; font-weight: 600; font-size: 16px; text-decoration: none">Join the Discord</a>
+<a class="zf-btn2" href="https://discord.gg/wZ9gKmTUNa" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 24px; border-radius: 14px; border: 1px solid #3A3448; color: #EDEAF5; font-weight: 600; font-size: 16px; text-decoration: none">Join the Discord</a>
 </div>
 </div>
 <div style="flex: 1 1 340px; min-width: 0; display: flex; justify-content: center">
@@ -726,10 +727,9 @@ Searched your presets
 <p style="margin: 0; max-width: 560px; font-size: 18px; line-height: 1.6; color: #B5AFC6"><span data-zf="getline">Zenframe Assistant 1.5.1</span> for After Effects. One install file, then Zeni is in your panel.</p>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 14px" id="community">
 <a class="zf-btn" href="https://github.com/ItSoru/zenframe-assistant/releases/latest" style="display: inline-flex; align-items: center; min-height: 54px; padding: 0 28px; border-radius: 14px; background: #B8A5F8; color: #17112A; font-weight: 700; font-size: 16px; text-decoration: none" data-zf="dl">Download 1.5.1</a>
-<a class="zf-btn2" href="#community" style="display: inline-flex; align-items: center; min-height: 54px; padding: 0 26px; border-radius: 14px; border: 1px solid #3A3448; color: #EDEAF5; font-weight: 600; font-size: 16px; text-decoration: none">Join the Discord</a>
+<a class="zf-btn2" href="https://discord.gg/wZ9gKmTUNa" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; min-height: 54px; padding: 0 26px; border-radius: 14px; border: 1px solid #3A3448; color: #EDEAF5; font-weight: 600; font-size: 16px; text-decoration: none">Join the Discord</a>
 </div>
 <a href="https://github.com/ItSoru/zenframe-assistant" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #A49FB4">Source on GitHub</a>
-<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #6F6980">[DISCORD INVITE]</span>
 </div>
 </section>
 
@@ -741,7 +741,7 @@ Searched your presets
 </div>
 <div style="display: flex; flex-wrap: wrap; gap: 8px 24px">
 <a href="https://www.tiktok.com/@zenframe.labs" class="zf-nav" style="color: #C9C3D8; text-decoration: none">TikTok @zenframe.labs</a>
-<a href="#community" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Discord</a>
+<a href="https://discord.gg/wZ9gKmTUNa" target="_blank" rel="noopener" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Discord</a>
 <a href="#changelog" class="zf-nav" style="color: #C9C3D8; text-decoration: none">Changelog</a>
 <a href="https://github.com/ItSoru/zenframe-assistant" class="zf-nav" style="color: #C9C3D8; text-decoration: none">GitHub</a>
 </div>
